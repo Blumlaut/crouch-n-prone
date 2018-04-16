@@ -35,27 +35,30 @@ Citizen.CreateThread( function()
 						crouched = true 
 					end 
 				elseif ( IsDisabledControlJustPressed(0, proneKey) and not crouched and not IsPedInAnyVehicle(ped, true) and not IsPedFalling(ped) and not IsPedDiving(ped) and not IsPedInCover(ped, false) and not IsPedInParachuteFreeFall(ped) and (GetPedParachuteState(ped) == 0 or GetPedParachuteState(ped) == -1) ) then
-						if proned then
-							ClearPedTasksImmediately(ped)
-							proned = false
-						else
-							RequestAnimSet( "move_crawl" )
-							while ( not HasAnimSetLoaded( "move_crawl" ) ) do 
-								Citizen.Wait( 100 )
-							end 
-							ClearPedTasksImmediately(ped)
-							proned = true
-							if IsPedSprinting(ped) or IsPedRunning(ped) or GetEntitySpeed(ped) > 5 then
-								TaskPlayAnim(ped, "move_jump", "dive_start_run", 8.0, 1.0, -1, 0, 0.0, 0, 0, 0)
-								Wait(1000)
-							end
-							SetProned()
+					if proned then
+						ClearPedTasksImmediately(ped)
+						proned = false
+					else
+						RequestAnimSet( "move_crawl" )
+						while ( not HasAnimSetLoaded( "move_crawl" ) ) do 
+							Citizen.Wait( 100 )
+						end 
+						ClearPedTasksImmediately(ped)
+						proned = true
+						if IsPedSprinting(ped) or IsPedRunning(ped) or GetEntitySpeed(ped) > 5 then
+							TaskPlayAnim(ped, "move_jump", "dive_start_run", 8.0, 1.0, -1, 0, 0.0, 0, 0, 0)
+							Wait(1000)
 						end
+						SetProned()
+					end
 				end
-			end 
-		end 
+			end
+		else
+			proned = false
+			crouched = false
+		end
 	end
-end )
+end)
 
 function SetProned()
 	if IsPedArmed(PlayerPedId(), 6) then
