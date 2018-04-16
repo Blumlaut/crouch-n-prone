@@ -61,11 +61,10 @@ Citizen.CreateThread( function()
 end)
 
 function SetProned()
-	if IsPedArmed(PlayerPedId(), 6) then
-		ped = PlayerPedId()
-		ClearPedTasksImmediately(ped)
-		TaskAimGunScripted(ped, GetHashKey("SCRIPTED_GUN_TASK_PLANE_WING"), true, true)
-	end
+	ped = PlayerPedId()
+	ClearPedTasksImmediately(ped)
+	TaskPlayAnim(ped,"move_crawl","onfront_bwd",0.0,0.0,0,0,0.0,false,false,false)
+	--TaskPlayAnim(ped, animDictionary, animationName, speed, speedMultiplier, duration, flag, playbackRate, lockX, lockY, lockZ)
 end
 
 function ProneMovement()
@@ -79,9 +78,9 @@ function ProneMovement()
 			TaskPlayAnim(ped,"move_crawl","onfront_fwd",8.0,-4.0,-1,9,0.0,false,false,false)
 		elseif IsControlPressed(0, 33) and not IsEntityPlayingAnim(ped, "move_crawl", "onfront_bwd", 3) then
 			TaskPlayAnim(ped,"move_crawl","onfront_bwd",8.0,-4.0,-1,9,0.0,false,false,false)
+			TaskPlayAnim(ped, animDictionary, animationName, speed, speedMultiplier, duration, flag, playbackRate, lockX, lockY, lockZ)
 		elseif IsControlJustReleased(0, 32) or IsControlJustReleased(0, 33) then 
-			ClearPedTasksImmediately(ped)
-			TaskAimGunScripted(ped, GetHashKey("SCRIPTED_GUN_TASK_PLANE_WING"), true, true)
+			TaskPlayAnim(ped,"move_crawl","onfront_bwd",0.0,0.0,0,9,0.0,false,false,false)
 		end
 	end
 end
