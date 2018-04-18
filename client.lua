@@ -1,6 +1,3 @@
--- Script Created by Giant Cheese Wedge (AKA Blü)
--- Script Modified and fixed by Hoopsure
-
 local crouched = false
 local proned = false
 crouchKey = 26
@@ -63,32 +60,50 @@ end)
 
 function SetProned()
 	ped = PlayerPedId()
+	if IsPedArmed(ped, 7) then
+		ClearPedTasks(ped)
+		TaskAimGunScripted(ped, GetHashKey("SCRIPTED_GUN_TASK_PLANE_WING"), true, true)
+	else
 	ClearPedTasksImmediately(ped)
 	TaskPlayAnimAdvanced(ped, "move_crawl", "onfront_fwd", GetEntityCoords(ped), 0.0, 0.0, GetEntityHeading(ped), 1.0, 1.0, 1.0, 46, 1.0, 0, 0)
+	end
 end
 
 
 function ProneMovement()
 	if proned then
+		DisableControlAction(0, 140, true)
+		DisableControlAction(0, 141, true)
+		DisableControlAction(0, 142, true)
 		ped = PlayerPedId()
 		if IsControlPressed(0, 32) or IsControlPressed(0, 33) then
 			DisablePlayerFiring(ped, true)
 		 elseif IsControlJustReleased(0, 32) or IsControlJustReleased(0, 33) then
 		 	DisablePlayerFiring(ped, false)
 		 end
-		if IsControlJustPressed(0, 32) and not movefwd then
-			movefwd = true
-		    TaskPlayAnimAdvanced(ped, "move_crawl", "onfront_fwd", GetEntityCoords(ped), 1.0, 0.0, GetEntityHeading(ped), 1.0, 1.0, 1.0, 47, 1.0, 0, 0)
-		elseif IsControlJustReleased(0, 32) and movefwd then
-		    TaskPlayAnimAdvanced(ped, "move_crawl", "onfront_fwd", GetEntityCoords(ped), 1.0, 0.0, GetEntityHeading(ped), 1.0, 1.0, 1.0, 46, 1.0, 0, 0)
-			movefwd = false
+		if IsControlPressed(0, 32) and not moving then
+			moving = true
+		    TaskPlayAnimAdvanced(ped, "move_crawl", "onfront_fwd", GetEntityCoords(ped), 0.0, 0.0, GetEntityHeading(ped), 1.0, 1.0, 1.0, 47, 1.0, 0, 0)
+		    elseif IsControlJustReleased(0, 32) and IsPedArmed(ped, 7) and moving then
+		    	Citizen.Wait(250)
+		    	ClearPedTasks(ped)
+		    	TaskAimGunScripted(ped, GetHashKey("SCRIPTED_GUN_TASK_PLANE_WING"), true, true)
+		    	moving = false
+		elseif IsControlJustReleased(0, 32) and moving then
+		    TaskPlayAnimAdvanced(ped, "move_crawl", "onfront_fwd", GetEntityCoords(ped), 0.0, 0.0, GetEntityHeading(ped), 1.0, 1.0, 1.0, 46, 1.0, 0, 0)
+			moving = false
 		end		
-		if IsControlJustPressed(0, 33) and not movebwd then
-			movebwd = true
-		    TaskPlayAnimAdvanced(ped, "move_crawl", "onfront_bwd", GetEntityCoords(ped), 1.0, 0.0, GetEntityHeading(ped), 1.0, 1.0, 1.0, 47, 1.0, 0, 0)
-		elseif IsControlJustReleased(0, 33) and movebwd then 
-		    TaskPlayAnimAdvanced(ped, "move_crawl", "onfront_bwd", GetEntityCoords(ped), 1.0, 0.0, GetEntityHeading(ped), 1.0, 1.0, 1.0, 46, 1.0, 0, 0)
-		    movebwd = false
+		if IsControlPressed(0, 33) and not moving then
+			moving = true
+		    TaskPlayAnimAdvanced(ped, "move_crawl", "onfront_bwd", GetEntityCoords(ped), 0.0, 0.0, GetEntityHeading(ped), 1.0, 1.0, 1.0, 47, 1.0, 0, 0)
+			elseif IsControlJustReleased(0, 33) and IsPedArmed(ped, 7) and moving then
+				Citizen.Wait(250)
+		    	ClearPedTasks(ped)
+		    	TaskAimGunScripted(ped, GetHashKey("SCRIPTED_GUN_TASK_PLANE_WING"), true, true)
+		    	moving = false
+		elseif IsControlJustReleased(0, 33) and moving then 
+		    TaskPlayAnimAdvanced(ped, "move_crawl", "onfront_bwd", GetEntityCoords(ped), 0.0, 0.0, GetEntityHeading(ped), 1.0, 1.0, 1.0, 46, 1.0, 0, 0)
+		    moving = false
 		end
 		if IsControlPressed(0, 34) then
 			SetEntityHeading(ped, GetEntityHeading(ped)+2.0 )
