@@ -45,7 +45,7 @@ Citizen.CreateThread( function()
 						proned = true
 						if IsPedSprinting(ped) or IsPedRunning(ped) or GetEntitySpeed(ped) > 5 then
 							TaskPlayAnim(ped, "move_jump", "dive_start_run", 8.0, 1.0, -1, 0, 0.0, 0, 0, 0)
-							Citizen.Wait(1200)
+							Citizen.Wait(1000)
 						end
 						SetProned()
 					end
