@@ -1,5 +1,5 @@
--- Needs Sync Testing
--- Changes Made By Hoopsure
+-- Script Created by Giant Cheese Wedge (AKA Blü)
+-- Script Modified and fixed by Hoopsure
 
 local crouched = false
 local proned = false
@@ -71,6 +71,11 @@ end
 function ProneMovement()
 	if proned then
 		ped = PlayerPedId()
+		if IsControlPressed(0, 32) or IsControlPressed(0, 33) then
+			DisablePlayerFiring(ped, true)
+		 elseif IsControlJustReleased(0, 32) or IsControlJustReleased(0, 33) then
+		 	DisablePlayerFiring(ped, false)
+		 end
 		if IsControlJustPressed(0, 32) and not movefwd then
 			movefwd = true
 		    TaskPlayAnimAdvanced(ped, "move_crawl", "onfront_fwd", GetEntityCoords(ped), 1.0, 0.0, GetEntityHeading(ped), 1.0, 1.0, 1.0, 47, 1.0, 0, 0)
