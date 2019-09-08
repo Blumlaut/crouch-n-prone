@@ -71,6 +71,7 @@ end
 function ProneMovement()
 	if proned then
 		ped = PlayerPedId()
+		DisableControlAction(0, 23)
 		if IsControlPressed(0, 32) or IsControlPressed(0, 33) then
 			DisablePlayerFiring(ped, true)
 		 elseif IsControlJustReleased(0, 32) or IsControlJustReleased(0, 33) then
