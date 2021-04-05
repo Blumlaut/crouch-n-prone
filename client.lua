@@ -37,7 +37,9 @@ Citizen.CreateThread( function()
 					end 
 				elseif ( IsDisabledControlJustPressed(0, proneKey) and not crouched and not IsPedInAnyVehicle(ped, true) and not IsPedFalling(ped) and not IsPedDiving(ped) and not IsPedInCover(ped, false) and not IsPedInParachuteFreeFall(ped) and (GetPedParachuteState(ped) == 0 or GetPedParachuteState(ped) == -1) ) then
 					if proned then
-						ClearPedTasksImmediately(ped)
+						ClearPedTasks(ped)
+						local me = GetEntityCoords(ped)
+						SetEntityCoords(ped, me.x, me.y, me.z-0.5)
 						proned = false
 					elseif not proned then
 						RequestAnimSet( "move_crawl" )
@@ -72,6 +74,7 @@ function ProneMovement()
 	if proned then
 		ped = PlayerPedId()
 		DisableControlAction(0, 23)
+		DisableControlAction(0, 21)
 		if IsControlPressed(0, 32) or IsControlPressed(0, 33) then
 			DisablePlayerFiring(ped, true)
 		 elseif IsControlJustReleased(0, 32) or IsControlJustReleased(0, 33) then
